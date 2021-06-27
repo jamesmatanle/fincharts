@@ -1,27 +1,27 @@
+URL="'https://www.federalreserve.gov/datadownload/Output.aspx?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&lastobs=&from=&to=&filetype=csv&label=include&layout=seriescolumn&type=package'"
+SERVER="james@$DO_IP"
+
 dev() {
-    echo 'opening browser and port 8888...'
     open 'http://localhost:8888/public'
     python3 -m http.server 8888
 }
 
-download_data() {
-    echo 'downloading fresh data...'
-    curl -o ./public/frb.csv 'https://www.federalreserve.gov/datadownload/Output.aspx?rel=H15&series=bf17364827e38702b42a58cf8eaa3f78&lastobs=&from=&to=&filetype=csv&label=include&layout=seriescolumn&type=package'
-}
-
-copy_data() {
-    echo 'copying data to server...'
-    scp ./public/frb.csv james@${DO_IP}:/var/www/jamesmatanle.com/html/fincharts/frb.csv
+download_csv() {
+    echo $URL | xargs curl -o ./public/frb.csv
 }
 
 sync_public() {
-    echo 'copying public all site files to server...'
-    rsync --verbose --progress --archive -zLcb ./public/ james@${DO_IP}:/var/www/jamesmatanle.com/html/fincharts/
+    rsync --verbose --progress --archive -zLcb ./public/ ${SERVER}:/var/www/jamesmatanle.com/html/fincharts/
 }
 
-all() {
-    download_data
-    sync_public
+sync_conf() {
+    echo "#!/bin/bash\ncurl -o '/var/www/jamesmatanle.com/html/fincharts/frb.csv' $URL &> ~/datacronout" | tee /tmp/datacron
+    chmod +x /tmp/datacron
+    scp /tmp/datacron ${SERVER}:/tmp/datacron
+    ssh -t $SERVER 'sudo mv /tmp/datacron /etc/cron.daily/datacron'
+    # ssh -t $SERVER 'sudo apt update; sudo apt install cron; sudo systemctl enable cron'
+    scp ./conf/jamesmatanle.com.conf ${SERVER}:/tmp/conf
+    ssh -t $SERVER 'sudo mv /tmp/conf /etc/nginx/sites-available/jamesmatanle.com && sudo ln -sf /etc/nginx/sites-available/jamesmatanle.com /etc/nginx/sites-enabled/ && service nginx restart'
 }
 
 if [ $# -eq 0 ]; then

@@ -15,7 +15,12 @@
     <h3>
       US Treasury Yield Surface (<a href="https://www.nytimes.com/interactive/2015/03/19/upshot/3d-yield-curve-economic-growth.html">NYTimes clone</a>)
     </h3>
-    <p> Interest Rate (Height) x Date (Width) x Maturity (Depth) </p>
+    <form class="datediv" onsubmit=" return submitDateRange();">
+      <label>start date</label><input id="start" type="text" placeholder="YYYY-MM-DD"><br><br>
+      <label>end date</label><input id="end" type="text" placeholder="YYYY-MM-DD"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+    <div id="3d" width="1300px" height="700px"></div>
     <script src="main.js"></script>
   </body>
 </html>

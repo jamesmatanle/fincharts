@@ -7,9 +7,29 @@ body {
 }
 
 h3, p {
-  margin: 5px;
+  margin: 0.3rem;
 }
 
 canvas {
   border: 1px solid grey;
+}
+
+label {
+  margin-left: 1rem;
+  margin-right: 0.2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input[type="text"] {
+  width: 100px;
+  text-align: center;
+}
+
+input[type="submit"] {
+  margin-left: 1rem
 }
