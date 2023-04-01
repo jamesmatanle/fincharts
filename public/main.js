@@ -9,7 +9,7 @@ const width = 1300,
         alpha: true
       }),
       controls = new THREE.OrbitControls(camera, renderer.domElement),
-      maturityKeys = ['1-month', '3-month', '6-month', '1-year', '2-year', '3-year', '5-year', '7-year', '10-year', '20-year', '30-year'].map(s => `Market yield on U.S. Treasury securities at ${s}   constant maturity, quoted on investment basis`),
+      maturityKeys = ['1-month', '3-month', '6-month', '1-year', '2-year', '3-year', '5-year', '7-year', '10-year', '20-year', '30-year'].map(s => `Market yield on U.S. Treasury securities at ${s}  constant maturity, quoted on investment basis`),
       maturityLabels = ['30Y', '20Y', '10Y', '7Y', '5Y', '3Y', '2Y', '1Y', '6M', '3M', '1M'],
       chartDims = {
         w: 80,
